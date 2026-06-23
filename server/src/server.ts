@@ -13,6 +13,16 @@ const PORT = process.env.PORT || 4500;
 app.use(cors());
 app.use(express.json());
 
+import { redis } from './lib/redis';
+
+//redis test
+redis.set('test','Hello this is test for upstash redis').then(()=>{
+  redis.get('test').then((val)=>{
+    console.log('Redis test value: ', val);
+  });
+});
+
+//health
 app.get("/", (req, res) => {
   res.send("Server is working fine!");
 });
