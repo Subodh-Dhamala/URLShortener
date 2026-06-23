@@ -60,4 +60,11 @@ export class UrlService {
     return url;
   }
 
+  async getUserLinks(userId: string): Promise<Url[]>{
+    return this.repo.find({
+      where: {userId},
+      order: {createdAt: 'DESC'}
+    })
+  }
+
 }

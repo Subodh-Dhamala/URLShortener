@@ -7,11 +7,14 @@ import {
   Path,
   SuccessResponse,
   Res,
+  Request,
   TsoaResponse,
+  Security,
 } from 'tsoa';
 
 import {UrlService} from '../services/UrlService';
-import { shorten } from 'typeorm/util/StringUtils.js';
+import { JwtPayload } from 'jsonwebtoken';
+import express from 'express';
 
 interface ShortenRequest {
   originalUrl: string;
@@ -90,8 +93,17 @@ async redirect(
   }
 
 
-
-
-
+ @Get('my-links')
+  @Security('jwt')
+  async myLinks(
+    @Request() request: express.Request,
+    @Res() errorResponse: TsoaResponse<401, { error: string }>
+  ): Promise<StatsResponse[]> {
+    try {
+      const user = (request as any).user as JwtPayload;
+      return await urlService.getUserLinks(user.userId);
+    } catch {
+      return errorResponse(401, { error: 'Unauthorized' });
+    }
+  }
 }
-
