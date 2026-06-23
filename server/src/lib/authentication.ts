@@ -21,6 +21,7 @@ if(securityName === 'jwt'){
 
   try{
     const decoded = jwt.verify(token,process.env.JWT_SECRET!) as JwtPayload;
+    (request as any).user = decoded;
     return decoded;
   }
 
