@@ -6,10 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
-  "build": "tsoa spec-and-routes && tsc",
-  "routes": "tsoa spec-and-routes",
-  "migration:generate": "typeorm-ts-node-commonjs migration:generate src/migrations/CreateUrl -d src/lib/database.ts",
-"migration:run": "typeorm-ts-node-commonjs migration:run -d src/lib/database.ts"
+    "build": "tsoa spec-and-routes && tsc",
+    "routes": "tsoa spec-and-routes",
+    "migration:generate": "typeorm-ts-node-commonjs migration:generate src/migrations/CreateUrl -d src/lib/database.ts",
+    "migration:run": "typeorm-ts-node-commonjs migration:run -d src/lib/database.ts"
   },
   "keywords": [],
   "author": "",
