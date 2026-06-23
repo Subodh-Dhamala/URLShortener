@@ -21,6 +21,9 @@ export class Url {
   @Column({ type: 'int', default: 0 })
   clicks!: number;
 
+  @Column({name: 'user_id', type:'varchar' , nullable: true})
+  userId!: string | null;
+
   @CreateDateColumn()
   createdAt!: Date;
 }
