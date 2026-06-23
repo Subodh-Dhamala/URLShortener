@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { AppDataSource } from "./lib/database";
+import { RegisterRoutes } from "./routes/routes";
 
 const app = express();
 const PORT = process.env.PORT || 4500;
@@ -13,16 +14,9 @@ const PORT = process.env.PORT || 4500;
 app.use(cors());
 app.use(express.json());
 
-import { redis } from './lib/redis';
+RegisterRoutes(app);
 
-//redis test
-redis.set('test','Hello this is test for upstash redis').then(()=>{
-  redis.get('test').then((val)=>{
-    console.log('Redis test value: ', val);
-  });
-});
-
-//health
+// health
 app.get("/", (req, res) => {
   res.send("Server is working fine!");
 });
