@@ -1,12 +1,12 @@
-import { AppDataSource } from "../lib/database";
-import {redis} from '../lib/redis';
-import { Url } from "../entities/Url";
-import { generateShortCode } from "../lib/shortcode";
+import { AppDataSource } from '../lib/database';
+import { redis } from '../lib/redis';
+import { Url } from '../entities/Url';
+import { generateShortCode } from '../lib/shortcode';
 
 export class UrlService {
   private repo = AppDataSource.getRepository(Url);
 
-  async shorten(originalUrl: string):Promise<{shortCode:string}>{
+  async shorten(originalUrl: string, userId: string | null): Promise<{shortCode:string}>{
 
     //validate URL
     try{
@@ -17,13 +17,13 @@ export class UrlService {
 
     const shortCode = await generateShortCode();
 
-    const url = this.repo.create({shortCode, originalUrl});
+    const url = this.repo.create({shortCode, originalUrl, userId});
     await this.repo.save(url);
 
     //cache immediately
     await redis.set(`url:${shortCode}`, originalUrl, {ex:3600});
 
-    return {shortCode};;
+    return {shortCode};
 
   }
 
@@ -40,7 +40,6 @@ export class UrlService {
       where: {shortCode}
      });
      if(!url) throw new Error('Url not found!');
-
 
      //store in cache for next use
      await redis.set(`url:${shortCode}`,url.originalUrl, {ex:3600});
@@ -60,11 +59,11 @@ export class UrlService {
     return url;
   }
 
-  async getUserLinks(userId: string): Promise<Url[]>{
+  async getUserLinks(userId: string): Promise<Url[]> {
     return this.repo.find({
-      where: {userId},
-      order: {createdAt: 'DESC'}
-    })
+      where: { userId },
+      order: { createdAt: 'DESC' },
+    });
   }
 
 }

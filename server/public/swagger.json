@@ -94,6 +94,10 @@
 			"jwt": {
 				"type": "http",
 				"scheme": "bearer"
+			},
+			"jwt_optional": {
+				"type": "http",
+				"scheme": "bearer"
 			}
 		}
 	},
@@ -139,7 +143,11 @@
 						}
 					}
 				},
-				"security": [],
+				"security": [
+					{
+						"jwt_optional": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -238,7 +246,7 @@
 				]
 			}
 		},
-		"/my-links": {
+		"/urls/my-links": {
 			"get": {
 				"operationId": "MyLinks",
 				"responses": {

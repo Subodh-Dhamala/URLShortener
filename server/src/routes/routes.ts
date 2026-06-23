@@ -81,9 +81,11 @@ export function RegisterRoutes(app: Router) {
     
         const argsUrlController_shorten: Record<string, TsoaRoute.ParameterSchema> = {
                 body: {"in":"body","name":"body","required":true,"ref":"ShortenRequest"},
-                notFoundResponse: {"in":"res","name":"400","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"error":{"dataType":"string","required":true}}},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+                errorResponse: {"in":"res","name":"400","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"error":{"dataType":"string","required":true}}},
         };
         app.post('/shorten',
+            authenticateMiddleware([{"jwt_optional":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UrlController)),
             ...(fetchMiddlewares<RequestHandler>(UrlController.prototype.shorten)),
 
@@ -176,7 +178,7 @@ export function RegisterRoutes(app: Router) {
                 request: {"in":"request","name":"request","required":true,"dataType":"object"},
                 errorResponse: {"in":"res","name":"401","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"error":{"dataType":"string","required":true}}},
         };
-        app.get('/my-links',
+        app.get('/urls/my-links',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UrlController)),
             ...(fetchMiddlewares<RequestHandler>(UrlController.prototype.myLinks)),

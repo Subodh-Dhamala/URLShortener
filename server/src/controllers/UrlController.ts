@@ -1,34 +1,33 @@
 import {
   Controller,
-  Post, 
+  Post,
   Get,
   Route,
   Body,
   Path,
   SuccessResponse,
   Res,
-  Request,
   TsoaResponse,
+  Request,
   Security,
 } from 'tsoa';
-
-import {UrlService} from '../services/UrlService';
-import { JwtPayload } from 'jsonwebtoken';
+import { UrlService } from '../services/UrlService';
+import { JwtPayload } from '../lib/authentication';
 import express from 'express';
 
 interface ShortenRequest {
   originalUrl: string;
 }
 
-interface ShortenResponse{
+interface ShortenResponse {
   shortCode: string;
   shortUrl: string;
 }
 
-interface StatsResponse{
-  shortCode: string,
-  originalUrl: string, 
-  clicks: number,
+interface StatsResponse {
+  shortCode: string;
+  originalUrl: string;
+  clicks: number;
   createdAt: Date;
 }
 
@@ -37,42 +36,45 @@ const urlService = new UrlService();
 @Route('/')
 export class UrlController extends Controller {
 
-@Post ('shorten')
-@SuccessResponse(201, 'Created')
-async shorten(
-  @Body() body: ShortenRequest,
-  @Res() notFoundResponse: TsoaResponse<400, {error:string}>
-): Promise<ShortenResponse> {
+  @Post('shorten')
+  @Security('jwt_optional')
+  @SuccessResponse(201, 'Created')
+  async shorten(
+    @Body() body: ShortenRequest,
+    @Request() request: express.Request,
+    @Res() errorResponse: TsoaResponse<400, { error: string }>
+  ): Promise<ShortenResponse> {
+    try {
+      const user = (request as any).user as JwtPayload | undefined;
+      const userId = user?.userId ?? null;
 
-try{
-  const {shortCode} = await urlService.shorten(body.originalUrl);
-  this.setStatus(201);
+      console.log('user from request:', user);
+      console.log('userId:', userId);
 
-  return {
+      const { shortCode } = await urlService.shorten(body.originalUrl, userId);
+      this.setStatus(201);
+      return {
         shortCode,
         shortUrl: `${process.env.BASE_URL}/${shortCode}`,
       };
-}
-catch(e:any){
-  return notFoundResponse(400, {error: e.message});
-}
-}
-
-@Get('{shortCode}')
-async redirect(
-  @Path() shortCode: string,
-  @Res() notFoundResponse: TsoaResponse<404, { error: string }>
-): Promise<void> {
-
-  try {
-    const originalUrl = await urlService.resolve(shortCode);
-    this.setHeader('Location', originalUrl);
-    this.setStatus(302);
-  } catch {
-    return notFoundResponse(404, { error: 'Link not found' });
+    } catch (err: any) {
+      return errorResponse(400, { error: err.message });
+    }
   }
 
-}
+  @Get('{shortCode}')
+  async redirect(
+    @Path() shortCode: string,
+    @Res() notFoundResponse: TsoaResponse<404, { error: string }>
+  ): Promise<void> {
+    try {
+      const originalUrl = await urlService.resolve(shortCode);
+      this.setHeader('Location', originalUrl);
+      this.setStatus(302);
+    } catch {
+      return notFoundResponse(404, { error: 'Link not found' });
+    }
+  }
 
   @Get('{shortCode}/stats')
   async stats(
@@ -92,8 +94,7 @@ async redirect(
     }
   }
 
-
- @Get('my-links')
+  @Get('urls/my-links')
   @Security('jwt')
   async myLinks(
     @Request() request: express.Request,
@@ -101,7 +102,14 @@ async redirect(
   ): Promise<StatsResponse[]> {
     try {
       const user = (request as any).user as JwtPayload;
-      return await urlService.getUserLinks(user.userId);
+      console.log('myLinks user:', user);
+      const links = await urlService.getUserLinks(user.userId);
+      return links.map(url => ({
+        shortCode: url.shortCode,
+        originalUrl: url.originalUrl,
+        clicks: url.clicks,
+        createdAt: url.createdAt,
+      }));
     } catch {
       return errorResponse(401, { error: 'Unauthorized' });
     }

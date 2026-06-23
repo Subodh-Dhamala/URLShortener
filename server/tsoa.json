@@ -9,6 +9,10 @@
       "jwt": {
         "type": "http",
         "scheme": "bearer"
+      },
+      "jwt_optional": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   },
