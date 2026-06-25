@@ -27,89 +27,67 @@ export default async function StatsPage({
   }
 
   return (
-    <main className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+  <div className="
+  min-h-screen
+  flex
+  flex-col
+  justify-center
+  items-center
+  p-16
+  bg-gray-50
+  "
+  >
+    <h1
+    className="font-bold text-gray-700 text-2xl"
+    >Link Stats</h1>
 
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-md border border-gray-200 p-8">
+    <div className="flex flex-col items-center w-full max-w-md space-y-12 shadow-2xl text-center">
 
-        <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-          Link Stats
-        </h1>
+      <div>
+        <p className="text-center text-8xl font-bold">{stats.clicks}</p>
+        <p className="text-gray-700 text-1xl">Total Clicks</p>
+      </div>
 
-        <div className="space-y-4">
-
-          <div className="bg-gray-50 rounded-xl p-4 text-center border border-gray-200">
-
-            <p className="text-4xl font-semibold text-gray-900">
-              {stats.clicks}
-            </p>
-
-            <p className="text-sm text-gray-400 mt-1">
-              total clicks
-            </p>
-
-          </div>
-
-          <div className="border-t border-gray-200 pt-4 space-y-3">
-
-            <div>
-              <p className="text-xs text-gray-400 mb-1">
-                Short Code
-              </p>
-
-              <p className="text-sm text-gray-700 font-medium break-all">
-                {stats.shortCode}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-xs text-gray-400 mb-1">
-                Original URL
-              </p>
-
-              <a
-                href={stats.originalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-gray-700 hover:underline break-all"
-              >
-                {stats.originalUrl}
-              </a>
-            </div>
-
-            <div>
-              <p className="text-xs text-gray-400 mb-1">
-                Created
-              </p>
-
-              <p className="text-sm text-gray-700">
-                {new Date(
-                  stats.createdAt
-                ).toLocaleDateString(
-                  "en-US",
-                  {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  }
-                )}
-              </p>
-            </div>
-
-          </div>
-
+      <div className="flex flex-col space-y-4">
+        
+        <div className="flex justify-between">
+          <p>Short Code</p>
+          <p>{stats.shortCode}</p>
         </div>
 
-        <div className="mt-6 text-center">
+        <div className="flex justify-between gap-12 ">
+          <p>Original URL</p>
           <a
-            href="/"
-            className="text-sm text-gray-500 hover:text-gray-700 hover:underline"
+            href={stats.originalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Back to home
+            {stats.originalUrl}
           </a>
         </div>
 
-      </div>
+        <div className="flex justify-between">
+          <p>Created</p>
+          <p>
+            {new Date(stats.createdAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+        </div>
 
-    </main>
-  );
+   <div className="p-8">
+      <a
+      className="hover:underline text-blue-500"
+      href="/">Back to home</a>
+    </div>
+
+
+      </div>
+    </div>
+
+ 
+  </div>
+);
 }
