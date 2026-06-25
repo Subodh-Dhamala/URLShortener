@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 
@@ -20,11 +21,12 @@ export default function RootLayout({
   return(
 
     <html>
-      <body className='{geist.className}'>
+      <body className='{geist.className} flex flex-col wrap'>
         <AuthProvider>
           <Navbar/>
           {children}
         </AuthProvider>
+       <Footer/>
       </body>
     </html>
 
