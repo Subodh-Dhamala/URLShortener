@@ -21,7 +21,8 @@ export default function RootLayout({
   return(
 
     <html>
-      <body className='{geist.className} flex flex-col wrap'>
+      <body className='{geist.className} flex flex-col '>
+        
         <AuthProvider>
           <Navbar/>
           {children}

@@ -6,6 +6,9 @@ import { shortenUrl, getErrorMessage, ShortenResponse } from "@/lib/api";
 import { QRCodeCanvas } from "qrcode.react";
 import { useAuth } from "@/context/AuthContext";
 
+import Image from "next/image";
+
+
 import {
   FiCopy,
   FiDownload,
@@ -71,7 +74,11 @@ export default function Home() {
   };
 
   return (
-    <div className="pt-20 px-4 py-2 flex flex-col gap-4 w-full max-w-150 ml-auto mr-auto">
+
+   
+    <div
+      className="pt-20 px-4 py-2 flex flex-col gap-4 w-full max-w-150 ml-auto mr-auto"
+    >
       <div className="text-center text-2xl font-semibold flex flex-col items-center">
         {isLoggedIn ? (
           <div className="flex gap-4 flex-col">
@@ -92,7 +99,7 @@ export default function Home() {
         )}
       </div>
 
-      <div className="text-center pt-16 flex flex-col gap-4">
+      <div className="text-center pt-16 flex flex-col gap-4 ">
         <div className="flex gap-2 ">
           <input
             type="text"
