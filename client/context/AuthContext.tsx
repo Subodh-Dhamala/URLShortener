@@ -17,11 +17,11 @@ export function AuthProvider({children}: {children: React.ReactNode}){
   const [email,setEmail] = useState<string|null>(null);
 
   useEffect(()=>{
-    const t = localStorage.getItem('token');
-    const e = localStorage.getItem('email');
+    const token = localStorage.getItem('token');
+    const email = localStorage.getItem('email');
 
-    if(t) setToken(t);
-    if(e) setToken(e);
+    if(token) setToken(token);
+    if(email) setToken(email);
 
   },[]);
 
@@ -42,7 +42,6 @@ export function AuthProvider({children}: {children: React.ReactNode}){
   return(
 
     <AuthContext.Provider value = {{
-
       token,
       email, 
       login,

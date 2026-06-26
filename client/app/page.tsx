@@ -5,15 +5,7 @@ import Link from "next/link";
 import { shortenUrl, getErrorMessage, ShortenResponse } from "@/lib/api";
 import { QRCodeCanvas } from "qrcode.react";
 import { useAuth } from "@/context/AuthContext";
-
-import Image from "next/image";
-
-
-import {
-  FiCopy,
-  FiDownload,
-  FiBarChart2,
-} from 'react-icons/fi';
+import { FiCopy, FiDownload, FiBarChart2 } from "react-icons/fi";
 
 export default function Home() {
   const [url, setUrl] = useState("");
@@ -62,7 +54,6 @@ export default function Home() {
 
   const handleDownloadQR = () => {
     const canvas = qrRef.current;
-
     if (!canvas) return;
 
     const imageUrl = canvas.toDataURL("image/png");
@@ -74,24 +65,18 @@ export default function Home() {
   };
 
   return (
-
-   
-    <div
-      className="pt-20 px-4 py-2 flex flex-col gap-4 w-full max-w-150 ml-auto mr-auto"
-    >
-      <div className="text-center text-2xl font-semibold flex flex-col items-center">
+    <div className="flex min-h-screen w-full max-w-150 grow flex-col gap-4 px-4 py-2 pt-20 ml-auto mr-auto">
+      <div className="flex flex-col items-center text-center text-2xl font-semibold">
         {isLoggedIn ? (
-          <div className="flex gap-4 flex-col">
+          <div className="flex flex-col gap-4">
             <p>
               Hello <span className="font-bold">{email}</span>!
             </p>
-            <p className="text-gray-600">Lets Shorten Your Links
-            </p>
+            <p className="text-gray-600">Lets Shorten Your Links</p>
           </div>
         ) : (
           <div className="flex flex-col gap-4">
             <p>
-              {" "}
               Hello <span className="font-bold">Guest User</span>!
             </p>
             <p className="text-gray-600">Lets Shorten Your Links</p>
@@ -99,26 +84,20 @@ export default function Home() {
         )}
       </div>
 
-      <div className="text-center pt-16 flex flex-col gap-4 ">
-        <div className="flex gap-2 ">
+      <div className="flex flex-col gap-4 pt-16 text-center">
+        <div className="flex gap-2">
           <input
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleShorten()}
             placeholder="Paste your long URL...."
-            className="
-        border
-        p-4 rounded-lg
-        grow
-        "
+            className="grow rounded-lg border p-4"
           />
 
           <button
-            className="rounded-lg border p-4 bg-blue-600 text-white hover:bg-blue-500 transition
-      border-gray-50
-      "
             onClick={handleShorten}
+            className="rounded-lg border border-gray-50 bg-blue-600 p-4 text-white transition hover:bg-blue-500"
           >
             Shorten
           </button>
@@ -127,82 +106,43 @@ export default function Home() {
         {error && <p className="text-red-500">{error}</p>}
 
         {result && (
-          <div className="flex flex-col gap-4 items-center">
+          <div className="flex flex-col items-center gap-4">
             <div className="flex gap-4 px-4 py-2">
               <a
                 href={result.shortUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2
-    
-                "
+                className="px-4 py-2"
               >
-                Your shortened URL :<span
-                className="
-                font-bold
-                "
-                
-                >{" " + result.shortUrl}</span>
+                Your shortened URL:
+                <span className="font-bold"> {result.shortUrl}</span>
               </a>
 
-              <button 
-              className="
-              bg-blue-400
-              text-white
-              rounded-lg
-              px-2
-              hover:bg-blue-300
-              transition
-              flex
-              items-center
-              gap-2
-              
-              "
-              onClick={handleCopy}
+              <button
+                onClick={handleCopy}
+                className="flex items-center gap-2 rounded-lg bg-blue-400 px-2 text-white transition hover:bg-blue-300"
               >
-                {copied ? "Copied " : "Copy"} <FiCopy />
+                {copied ? "Copied" : "Copy"} <FiCopy />
               </button>
             </div>
 
-              <QRCodeCanvas value={result.shortUrl} ref={qrRef} />
+            <QRCodeCanvas value={result.shortUrl} ref={qrRef} />
 
-            <div className="font-semibold flex gap-4">
-              <Link href={`/stats/${result.shortCode}`}> <button
-              className="
-              bg-blue-400
-              text-white
-              rounded-lg
-              px-2 py-2
-              hover:bg-blue-300
-              transition
-              flex
-              items-center
-              gap-2
-              
-              "
-              >
-                View Stats
-                 <FiBarChart2 />
-              </button>
+            <div className="flex gap-4 font-semibold">
+              <Link href={`/stats/${result.shortCode}`}>
+                <button className="flex items-center gap-2 rounded-lg bg-blue-400 px-2 py-2 text-white transition hover:bg-blue-300">
+                  View Stats
+                  <FiBarChart2 />
+                </button>
               </Link>
 
               <button
-              className="
-              bg-blue-400
-              text-white
-              rounded-lg
-              px-2 py-2
-              hover:bg-blue-300
-              transition
-              flex
-              items-center
-              gap-2
-              
-              "
-              onClick={handleDownloadQR}>
+                onClick={handleDownloadQR}
+                className="flex items-center gap-2 rounded-lg bg-blue-400 px-2 py-2 text-white transition hover:bg-blue-300"
+              >
                 Download QR
-                 <FiDownload />
-                </button>
+                <FiDownload />
+              </button>
             </div>
           </div>
         )}

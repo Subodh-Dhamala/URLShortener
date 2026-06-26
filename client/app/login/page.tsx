@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const { login } = useAuth();
   const router = useRouter();
 
@@ -22,6 +23,7 @@ export default function LoginPage() {
     try {
       const { token } = await loginApi(email, password);
       const decoded = jwtDecode<{ email: string }>(token);
+
       login(token, decoded.email);
       router.push("/dashboard");
     } catch (err: any) {
@@ -31,59 +33,51 @@ export default function LoginPage() {
     }
   };
 
- return (
-  <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-    
-    <div className="w-full max-w-md bg-white shadow-2xl rounded-2xl p-8 space-y-6">
-      
-      <h1 className="text-2xl font-bold text-center text-gray-800">
-        Welcome Back
-      </h1>
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md space-y-6 rounded-2xl bg-white p-8 shadow-2xl">
+        <h1 className="text-center text-2xl font-bold text-gray-800">
+          Welcome Back
+        </h1>
 
-      <div className="flex flex-col gap-4">
-        <input
-          type="email"
-          value={email}
-          placeholder="Enter your email"
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full border border-gray-300 p-3 rounded-lg focus:ring-blue-500"
-        />
+        <div className="flex flex-col gap-4">
+          <input
+            type="email"
+            value={email}
+            placeholder="Enter your email"
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full rounded-lg border border-gray-300 p-3 focus:ring-blue-500"
+          />
 
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="***********"
-          onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-          className="w-full border border-gray-300 p-3 rounded-lgfocus:ring-blue-500"
-        />
-      </div>
+          <input
+            type="password"
+            value={password}
+            placeholder="***********"
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+            className="w-full rounded-lg border border-gray-300 focus:ring-blue-500"
+          />
+        </div>
 
-      {error && (
-        <p className="text-sm text-red-500 text-center">
-          {error}
-        </p>
-      )}
+        {error && (
+          <p className="text-center text-sm text-red-500">{error}</p>
+        )}
 
-      <button
-        onClick={handleLogin}
-        disabled={isLoading || !email || !password}
-        className="w-full rounded-lg p-4 bg-blue-600 text-white hover:bg-blue-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isLoading ? "Logging in..." : "Login"}
-      </button>
-
-      <p className="text-sm text-gray-500 text-center">
-        No Account?{" "}
-        <Link
-          href="/register"
-          className="text-blue-600 hover:underline"
+        <button
+          onClick={handleLogin}
+          disabled={isLoading || !email || !password}
+          className="w-full rounded-lg bg-blue-600 p-4 text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Sign Up
-        </Link>
-      </p>
+          {isLoading ? "Logging in..." : "Login"}
+        </button>
 
+        <p className="text-center text-sm text-gray-500">
+          No Account?{" "}
+          <Link href="/register" className="text-blue-600 hover:underline">
+            Sign Up
+          </Link>
+        </p>
+      </div>
     </div>
-  </div>
-);
+  );
 }

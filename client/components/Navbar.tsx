@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { isLoggedIn, email, logout } = useAuth();
@@ -10,60 +10,34 @@ export default function Navbar() {
 
   const handleLogout = () => {
     logout();
-    router.push('/');
+    router.push("/");
   };
 
   return (
-    <nav className=' fixed top-0 w-full px-4 py-2'>
-      <div className='flex gap-4 justify-between items-center'>
-        
+    <nav className="fixed top-0 w-full px-4 py-2">
+      <div className="flex items-center justify-between gap-4">
         <div>
-        <Link href="/" className='font-bold text-blue-600 
-        text-3xl '>
-          SanoLink
-        </Link>
+          <Link href="/" className="text-3xl font-bold text-blue-600">
+            SanoLink
+          </Link>
         </div>
 
-        <div className='flex justify-between items-center gap-4'>
+        <div className="flex items-center justify-between gap-4">
           {isLoggedIn ? (
             <>
-              <Link
-                href="/dashboard"
-                className=""
-              >
-                My Links
-              </Link>
+              <Link href="/dashboard">My Links</Link>
 
-              <span className="">
-                {email}
-              </span>
+              <span>{email}</span>
 
-              <button
-                onClick={handleLogout}
-                className=""
-              >
-                Logout
-              </button>
+              <button onClick={handleLogout}>Logout</button>
             </>
           ) : (
             <>
-              <Link
-                href="/login"
-              
-              >
-                Login
-              </Link>
+              <Link href="/login">Login</Link>
 
               <Link
                 href="/register"
-                className="
-                border-none
-                bg-blue-600
-                 hover:bg-blue-500 transition
-                text-white
-                p-2
-                rounded-lg
-                "
+                className="rounded-lg border-none bg-blue-600 p-2 text-white transition hover:bg-blue-500"
               >
                 Sign up
               </Link>
