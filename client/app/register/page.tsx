@@ -5,13 +5,13 @@ import { useAuth } from "@/context/AuthContext";
 import { register as registerApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { jwtDecode } from "jwt-decode";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
 
   const { login } = useAuth();
   const router = useRouter();
@@ -21,10 +21,12 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const { token } = await registerApi(email, password);
-      const decoded = jwtDecode<{ email: string }>(token);
-
-      login(token, decoded.email);
+      const {
+        token,
+        email: userEmail,
+        username: userName,
+      } = await registerApi(email, password);
+      login(token, userEmail, userName);
       router.push("/dashboard");
     } catch (err: any) {
       setError(err.response?.data?.error || "Something went wrong!");
@@ -51,6 +53,15 @@ export default function RegisterPage() {
           />
 
           <input
+            type="text"
+            value={username}
+            required
+            onChange = {(e)=> setUsername(e.target.value)}
+            placeholder="Enter your email"
+            className="w-full rounded-lg border border-gray-300 p-4 focus:outline-blue-600"
+          />
+
+          <input
             type="password"
             value={password}
             required
@@ -60,9 +71,7 @@ export default function RegisterPage() {
             className="w-full rounded-lg border border-gray-300 p-4 focus:outline-blue-600"
           />
 
-          {error && (
-            <p className="text-center text-sm text-red-500">{error}</p>
-          )}
+          {error && <p className="text-center text-sm text-red-500">{error}</p>}
 
           <button
             onClick={handleRegister}
