@@ -2,10 +2,14 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
-import { shortenUrl,ShortenResponse } from "@/lib/api";
+import { shortenUrl, ShortenResponse } from "@/lib/api";
 import { QRCodeCanvas } from "qrcode.react";
 import { useAuth } from "@/context/AuthContext";
-import { FiCopy, FiDownload, FiBarChart2 } from "react-icons/fi";
+import {
+  FiCopy,
+  FiDownload,
+  FiBarChart2,
+} from "react-icons/fi";
 
 export default function Home() {
   const [url, setUrl] = useState("");
@@ -20,8 +24,7 @@ export default function Home() {
   const { isLoggedIn, username } = useAuth();
 
   const handleShorten = async () => {
-    
-    if(isLoading) return;
+    if (isLoading) return;
 
     setError("");
     setResult(null);
@@ -38,7 +41,7 @@ export default function Home() {
     try {
       const data = await shortenUrl(url, customCode, expiresAt);
       setResult(data);
-    } catch (error:any) {
+    } catch (error: any) {
       setError(error.message);
     } finally {
       setIsLoading(false);
@@ -70,107 +73,106 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen w-full max-w-150 grow flex-col gap-4 px-4 py-2 pt-20 ml-auto mr-auto">
-      <div className="flex flex-col items-center text-center text-2xl font-semibold">
-        {isLoggedIn ? (
-          <div className="flex flex-col gap-4">
-            <p>
-              Hello <span className="font-bold">{username}</span>!
-            </p>
-            <p className="text-gray-600">Lets Shorten Your Links</p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4">
-            <p>
-              Hello <span className="font-bold">Guest User</span>!
-            </p>
-            <p className="text-gray-600">Lets Shorten Your Links</p>
-          </div>
-        )}
-      </div>
+    <div className="min-h-screen w-full bg-[#f6fafe]">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 pt-8 pb-10">
+        <div className="flex flex-col items-center text-center">
+          <h1 className="text-3xl font-bold">
+            Hello{" "}
+            <span className="text-blue-600">
+              {isLoggedIn ? username : "Guest User"}!
+            </span>
+          </h1>
 
-      <div className="text-center">
-        <div className="flex flex-col gap-4">
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleShorten()}
-            placeholder="Paste your long URL...."
-            className="grow rounded-lg border p-4 "
-          />
-
-          <label className="block text-sm font-medium">
-            Optional Values - Expiry Time and Custom Code
-          </label>
-          <input
-            type="datetime-local"
-            value={expiresAt}
-            onChange={(e) => setExpiresAt(e.target.value)}
-            className="grow rounded-lg border p-4"
-          />
-
-          <input
-            type="text"
-            value={customCode}
-            onChange={(e) => setCustomCode(e.target.value)}
-            placeholder="Custom Code (optional)"
-            className="grow rounded-lg border p-4"
-          />
-
-          <button
-            onClick={handleShorten}
-             disabled ={isLoading}
-            className="rounded-lg border border-gray-50
-             bg-blue-600 p-4 text-white transition hover:bg-blue-500 "
-          >
-            {isLoading ? 'Shortening...' : 'Shorten'}
-          </button>
+          <p className="mt-2 text-gray-600 text-lg">
+            Let's Shorten Your Links
+          </p>
         </div>
 
-        {error && <p className="text-red-500">{error}</p>}
+        <div className="rounded-xl bg-white p-6 shadow-lg border border-gray-200">
+          <div className="flex flex-col gap-4">
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleShorten()}
+              placeholder="Paste your long URL..."
+              className="rounded-lg border p-4 outline-none focus:border-blue-500"
+            />
 
-        {result && (
-          <div className="flex flex-col items-center gap-4">
-            <div className="flex gap-4 px-4 py-2">
-              <a
-                href={result.shortUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2"
-              >
-                Your shortened URL:
-                <span className="font-bold"> {result.shortUrl}</span>
-              </a>
+            <label className="text-sm font-medium text-gray-700">
+              Optional Values - Expiry Time and Custom Code
+            </label>
 
-              <button
-                onClick={handleCopy}
-                className="flex items-center gap-2 rounded-lg bg-blue-400 px-2 text-white transition hover:bg-blue-300"
-              >
-                {copied ? "Copied" : "Copy"} <FiCopy />
-              </button>
-            </div>
+            <input
+              type="datetime-local"
+              value={expiresAt}
+              onChange={(e) => setExpiresAt(e.target.value)}
+              className="rounded-lg border p-4 outline-none focus:border-blue-500"
+            />
 
-            <QRCodeCanvas value={result.shortUrl} ref={qrRef} />
+            <input
+              type="text"
+              value={customCode}
+              onChange={(e) => setCustomCode(e.target.value)}
+              placeholder="Custom Code (optional)"
+              className="rounded-lg border p-4 outline-none focus:border-blue-500"
+            />
 
-            <div className="flex gap-4 font-semibold">
-              <Link href={`/stats/${result.shortCode}`}>
-                <button className="flex items-center gap-2 rounded-lg bg-blue-400 px-2 py-2 text-white transition hover:bg-blue-300">
-                  View Stats
-                  <FiBarChart2 />
-                </button>
-              </Link>
-
-              <button
-                onClick={handleDownloadQR}
-                className="flex items-center gap-2 rounded-lg bg-blue-400 px-2 py-2 text-white transition hover:bg-blue-300"
-              >
-                Download QR
-                <FiDownload />
-              </button>
-            </div>
+            <button
+              onClick={handleShorten}
+              disabled={isLoading}
+              className="rounded-lg bg-blue-600 p-4 font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isLoading ? "Shortening..." : "Shorten"}
+            </button>
           </div>
-        )}
+
+          {error && (
+            <p className="mt-4 text-center text-red-500">{error}</p>
+          )}
+
+          {result && (
+            <div className="mt-8 flex flex-col items-center gap-6">
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <a
+                  href={result.shortUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-blue-600 hover:underline"
+                >
+                  {result.shortUrl}
+                </a>
+
+                <button
+                  onClick={handleCopy}
+                  className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
+                >
+                  {copied ? "Copied" : "Copy"}
+                  <FiCopy />
+                </button>
+              </div>
+
+              <QRCodeCanvas value={result.shortUrl} ref={qrRef} />
+
+              <div className="flex gap-4">
+                <Link href={`/stats/${result.shortCode}`}>
+                  <button className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-400">
+                    View Stats
+                    <FiBarChart2 />
+                  </button>
+                </Link>
+
+                <button
+                  onClick={handleDownloadQR}
+                  className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
+                >
+                  Download QR
+                  <FiDownload />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
