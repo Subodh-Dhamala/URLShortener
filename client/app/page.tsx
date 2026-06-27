@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
-import { shortenUrl, getErrorMessage, ShortenResponse } from "@/lib/api";
+import { shortenUrl,ShortenResponse } from "@/lib/api";
 import { QRCodeCanvas } from "qrcode.react";
 import { useAuth } from "@/context/AuthContext";
 import { FiCopy, FiDownload, FiBarChart2 } from "react-icons/fi";
@@ -35,8 +35,8 @@ export default function Home() {
     try {
       const data = await shortenUrl(url, customCode, expiresAt);
       setResult(data);
-    } catch (error) {
-      setError(getErrorMessage(error));
+    } catch (error:any) {
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
