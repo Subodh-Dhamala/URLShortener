@@ -73,7 +73,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#f6fafe]">
+    <div className="min-h-screen w-full max-w-md bg-[#f6fafe]">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 pt-8 pb-10">
         <div className="flex flex-col items-center text-center">
           <h1 className="text-3xl font-bold">
