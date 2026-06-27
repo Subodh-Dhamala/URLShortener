@@ -7,9 +7,12 @@ import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "SanoLink",
-  description: "Shorten your URLs",
+  description: "URL Shortener",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
