@@ -53,7 +53,7 @@ export default function LoginPage() {
             placeholder="***********"
             onChange={(e) => setPassword(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-            className="w-full rounded-lg border border-gray-300 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 p-3 focus:ring-blue-500"
           />
         </div>
 

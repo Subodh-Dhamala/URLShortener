@@ -20,6 +20,9 @@ export default function Home() {
   const { isLoggedIn, username } = useAuth();
 
   const handleShorten = async () => {
+    
+    if(isLoading) return;
+
     setError("");
     setResult(null);
 
@@ -94,7 +97,7 @@ export default function Home() {
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleShorten()}
             placeholder="Paste your long URL...."
-            className="grow rounded-lg border p-4"
+            className="grow rounded-lg border p-4 "
           />
 
           <label className="block text-sm font-medium">
@@ -117,9 +120,11 @@ export default function Home() {
 
           <button
             onClick={handleShorten}
-            className="rounded-lg border border-gray-50 bg-blue-600 p-4 text-white transition hover:bg-blue-500"
+             disabled ={isLoading}
+            className="rounded-lg border border-gray-50
+             bg-blue-600 p-4 text-white transition hover:bg-blue-500 "
           >
-            Shorten
+            {isLoading ? 'Shortening...' : 'Shorten'}
           </button>
         </div>
 

@@ -9,6 +9,9 @@ export default function Navbar() {
   const router = useRouter();
 
   const handleLogout = () => {
+
+    if(!window.confirm('Are you sure you want to logout? '))return;
+
     logout();
     router.push("/");
   };
