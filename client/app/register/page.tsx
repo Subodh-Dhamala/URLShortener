@@ -57,7 +57,7 @@ export default function RegisterPage() {
             value={username}
             required
             onChange = {(e)=> setUsername(e.target.value)}
-            placeholder="Enter your email"
+            placeholder="Enter your Username"
             className="w-full rounded-lg border border-gray-300 p-4 focus:outline-blue-600"
           />
 
