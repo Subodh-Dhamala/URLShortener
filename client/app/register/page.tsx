@@ -25,7 +25,7 @@ export default function RegisterPage() {
         token,
         email: userEmail,
         username: userName,
-      } = await registerApi(email, password);
+      } = await registerApi(email,username, password);
       login(token, userEmail, userName);
       router.push("/dashboard");
     } catch (err: any) {
