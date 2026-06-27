@@ -1,3 +1,4 @@
+import { ValidateError } from "tsoa";
 import "reflect-metadata";
 import express from "express";
 const cors = require('cors');

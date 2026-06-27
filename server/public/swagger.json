@@ -27,10 +27,18 @@
 				"properties": {
 					"originalUrl": {
 						"type": "string"
+					},
+					"customCode": {
+						"type": "string"
+					},
+					"expiresAt": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"originalUrl"
+					"originalUrl",
+					"customCode",
+					"expiresAt"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -50,13 +58,19 @@
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"expiresAt": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
 					}
 				},
 				"required": [
 					"shortCode",
 					"originalUrl",
 					"clicks",
-					"createdAt"
+					"createdAt",
+					"expiresAt"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -65,15 +79,43 @@
 				"properties": {
 					"token": {
 						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"token"
+					"token",
+					"email",
+					"username"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"AuthRequest": {
+			"RegisterRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"username",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LoginRequest": {
 				"properties": {
 					"email": {
 						"type": "string"
@@ -169,6 +211,24 @@
 						"description": "No content"
 					},
 					"404": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"error": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"error"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"410": {
 						"description": "",
 						"content": {
 							"application/json": {
@@ -330,7 +390,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/AuthRequest"
+								"$ref": "#/components/schemas/RegisterRequest"
 							}
 						}
 					}
@@ -342,7 +402,7 @@
 				"operationId": "Login",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "OK",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -377,7 +437,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/AuthRequest"
+								"$ref": "#/components/schemas/LoginRequest"
 							}
 						}
 					}

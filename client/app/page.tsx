@@ -13,9 +13,11 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [customCode, setCustomCode] = useState("");
+  const [expiresAt, setExpiresAt] = useState("");
 
   const qrRef = useRef<HTMLCanvasElement | null>(null);
-  const { isLoggedIn, email } = useAuth();
+  const { isLoggedIn, username } = useAuth();
 
   const handleShorten = async () => {
     setError("");
@@ -31,7 +33,7 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      const data = await shortenUrl(url);
+      const data = await shortenUrl(url, customCode, expiresAt);
       setResult(data);
     } catch (error) {
       setError(getErrorMessage(error));
@@ -70,7 +72,7 @@ export default function Home() {
         {isLoggedIn ? (
           <div className="flex flex-col gap-4">
             <p>
-              Hello <span className="font-bold">{email}</span>!
+              Hello <span className="font-bold">{username}</span>!
             </p>
             <p className="text-gray-600">Lets Shorten Your Links</p>
           </div>
@@ -84,14 +86,32 @@ export default function Home() {
         )}
       </div>
 
-      <div className="flex flex-col gap-4 pt-16 text-center">
-        <div className="flex gap-2">
+      <div className="text-center">
+        <div className="flex flex-col gap-4">
           <input
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleShorten()}
             placeholder="Paste your long URL...."
+            className="grow rounded-lg border p-4"
+          />
+
+          <label className="block text-sm font-medium">
+            Optional Values - Expiry Time and Custom Code
+          </label>
+          <input
+            type="datetime-local"
+            value={expiresAt}
+            onChange={(e) => setExpiresAt(e.target.value)}
+            className="grow rounded-lg border p-4"
+          />
+
+          <input
+            type="text"
+            value={customCode}
+            onChange={(e) => setCustomCode(e.target.value)}
+            placeholder="Custom Code (optional)"
             className="grow rounded-lg border p-4"
           />
 

@@ -27,12 +27,15 @@ export interface StatsResponse {
   originalUrl: string;
   clicks: number;
   createdAt: string;
+  expiresAt: Date | null;
 }
 
 export async function shortenUrl(
-  originalUrl: string
+  originalUrl: string,
+  customCode?:string,
+  expiresAt?:string,
 ): Promise<ShortenResponse> {
-  const res = await api.post<ShortenResponse>('/shorten', { originalUrl });
+  const res = await api.post<ShortenResponse>('/shorten', { originalUrl,customCode,expiresAt });
 
   return res.data;
 }
@@ -47,9 +50,9 @@ export async function getStats(
 
 export async function login(
   email: string,
-  password: string
-): Promise<{ token: string }> {
-  const res = await api.post<{ token: string }>(
+  password: string,
+): Promise<{ token: string,email:string,username:string }> {
+  const res = await api.post<{ token: string,email:string,username:string}>(
     '/auth/login',
     { email, password }
   );
@@ -60,8 +63,8 @@ export async function login(
 export async function register(
   email: string,
   password: string
-): Promise<{ token: string }> {
-  const res = await api.post<{ token: string }>(
+): Promise<{token: string,email:string,username:string}> {
+  const res = await api.post<{token: string,email:string,username:string}>(
     '/auth/register',
     { email, password }
   );

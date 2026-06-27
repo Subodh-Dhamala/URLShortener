@@ -10,13 +10,21 @@ import {
 
 import { AuthService } from '../services/AuthService';
 
-interface AuthRequest{
+interface RegisterRequest {
+  email: string;
+  username: string;
+  password: string;
+}
+
+interface LoginRequest {
   email: string;
   password: string;
 }
 
-interface AuthResponse{
+interface AuthResponse {
   token: string;
+  email: string;
+  username: string;
 }
 
 const authService = new AuthService();
@@ -26,14 +34,14 @@ const authService = new AuthService();
 export class AuthController extends Controller{
 
 @Post('register')
-@SuccessResponse(201,'Created')
+@SuccessResponse(201, 'Created')
 async register(
-  @Body() body: AuthRequest,
-  @Res() errorResponse: TsoaResponse<400, {error: string}>
-): Promise<AuthResponse>{
+  @Body() body: RegisterRequest,
+  @Res() errorResponse: TsoaResponse<400, { error: string }>
+): Promise<AuthResponse> {
   try{
     this.setStatus(201);
-    return await authService.register(body.email, body.password);
+    return await authService.register(body.email,body.username, body.password);
   }
   catch(err:any){
     return errorResponse(400,{error: err.message});
@@ -43,9 +51,10 @@ async register(
 
 
 @Post('login')
+@SuccessResponse(200, 'OK')
 async login(
-  @Body() body: AuthRequest,
-  @Res() errorResponse: TsoaResponse<400, {error:string}>
+  @Body() body: LoginRequest,
+  @Res() errorResponse: TsoaResponse<400, { error: string }>
 ): Promise<AuthResponse> {
 
 try{

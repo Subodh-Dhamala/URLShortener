@@ -4,6 +4,7 @@ import {Request} from 'express';
 export interface JwtPayload{
   userId: string;
   email: string;
+  username:string;
 }
 
 export async function expressAuthentication(
@@ -27,6 +28,7 @@ export async function expressAuthentication(
       throw new Error('Invalid token');
     }
   }
+  
   // when the token is missing or invalid — user is anonymous
   if(securityName === 'jwt_optional'){
     const authHeader = request.headers['authorization'];

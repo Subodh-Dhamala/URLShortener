@@ -26,4 +26,8 @@ export class Url {
 
   @CreateDateColumn()
   createdAt!: Date;
+
+ @Column({ name: 'expires_at', type: 'timestamp', nullable: true })
+  expiresAt!: Date | null;
+
 }

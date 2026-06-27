@@ -14,7 +14,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 w-full px-4 py-2">
+    <nav className="fixed top-0 z-50 w-full bg-white px-4 py-2 shadow">
       <div className="flex items-center justify-between gap-4">
         <div>
           <Link href="/" className="text-3xl font-bold text-blue-600">

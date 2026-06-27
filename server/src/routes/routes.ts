@@ -30,6 +30,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "originalUrl": {"dataType":"string","required":true},
+            "customCode": {"dataType":"string","required":true},
+            "expiresAt": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -41,6 +43,7 @@ const models: TsoaRoute.Models = {
             "originalUrl": {"dataType":"string","required":true},
             "clicks": {"dataType":"double","required":true},
             "createdAt": {"dataType":"datetime","required":true},
+            "expiresAt": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
         },
         "additionalProperties": false,
     },
@@ -49,11 +52,23 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "token": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+            "username": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AuthRequest": {
+    "RegisterRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "email": {"dataType":"string","required":true},
+            "username": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "LoginRequest": {
         "dataType": "refObject",
         "properties": {
             "email": {"dataType":"string","required":true},
@@ -115,6 +130,7 @@ export function RegisterRoutes(app: Router) {
         const argsUrlController_redirect: Record<string, TsoaRoute.ParameterSchema> = {
                 shortCode: {"in":"path","name":"shortCode","required":true,"dataType":"string"},
                 notFoundResponse: {"in":"res","name":"404","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"error":{"dataType":"string","required":true}}},
+                expiredResponse: {"in":"res","name":"410","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"error":{"dataType":"string","required":true}}},
         };
         app.get('/:shortCode',
             ...(fetchMiddlewares<RequestHandler>(UrlController)),
@@ -207,7 +223,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAuthController_register: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"ref":"AuthRequest"},
+                body: {"in":"body","name":"body","required":true,"ref":"RegisterRequest"},
                 errorResponse: {"in":"res","name":"400","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"error":{"dataType":"string","required":true}}},
         };
         app.post('/auth/register',
@@ -238,7 +254,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAuthController_login: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"ref":"AuthRequest"},
+                body: {"in":"body","name":"body","required":true,"ref":"LoginRequest"},
                 errorResponse: {"in":"res","name":"400","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"error":{"dataType":"string","required":true}}},
         };
         app.post('/auth/login',
@@ -261,7 +277,7 @@ export function RegisterRoutes(app: Router) {
                 response,
                 next,
                 validatedArgs,
-                successStatus: undefined,
+                successStatus: 200,
               });
             } catch (err) {
                 return next(err);

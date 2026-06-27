@@ -5,7 +5,6 @@ import { useAuth } from "@/context/AuthContext";
 import { login as loginApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { jwtDecode } from "jwt-decode";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -13,6 +12,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  
   const { login } = useAuth();
   const router = useRouter();
 
@@ -21,10 +21,8 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const { token } = await loginApi(email, password);
-      const decoded = jwtDecode<{ email: string }>(token);
-
-      login(token, decoded.email);
+      const { token , email:userEmail,username} = await loginApi(email, password);
+      login(token, userEmail, username);
       router.push("/dashboard");
     } catch (err: any) {
       setError(err.response?.data?.error || "Something went wrong!");
@@ -37,7 +35,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md space-y-6 rounded-2xl bg-white p-8 shadow-2xl">
         <h1 className="text-center text-2xl font-bold text-gray-800">
-          Welcome Back
+          Welcome Back!
         </h1>
 
         <div className="flex flex-col gap-4">

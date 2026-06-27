@@ -44,6 +44,7 @@ export default function DashboardPage() {
               <th className="p-3 text-left">Short URL</th>
               <th className="p-3 text-left">Original URL</th>
               <th className="p-3 text-left">Clicks</th>
+              <th className="p-3 text-left">Expiry Date</th>
             </tr>
           </thead>
 
@@ -64,6 +65,14 @@ export default function DashboardPage() {
                 <td className="p-3">
                   <span className="rounded-full bg-green-100 px-2 py-1 text-sm text-green-700">
                     {link.clicks}
+                  </span>
+                </td>
+
+                <td className="p-3">
+                  <span>
+                    {link.expiresAt
+                      ? new Date(link.expiresAt).toLocaleString()
+                      : "None"}
                   </span>
                 </td>
               </tr>

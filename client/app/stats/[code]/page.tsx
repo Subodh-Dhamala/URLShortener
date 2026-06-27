@@ -59,11 +59,25 @@ export default async function StatsPage({
             </p>
           </div>
 
-          <div className="p-8">
+          <div className="flex justify-between">
+            <p>Expires</p>
+            <p>
+              {stats.expiresAt
+                ? new Date(stats.expiresAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })
+                : "Never"}
+            </p>
+          </div>
+
+        <div className="p-8">
             <a className="text-blue-500 hover:underline" href="/">
               Back to home
             </a>
           </div>
+
         </div>
       </div>
     </div>
