@@ -5,11 +5,7 @@ import Link from "next/link";
 import { shortenUrl, ShortenResponse } from "@/lib/api";
 import { QRCodeCanvas } from "qrcode.react";
 import { useAuth } from "@/context/AuthContext";
-import {
-  FiCopy,
-  FiDownload,
-  FiBarChart2,
-} from "react-icons/fi";
+import { FiCopy, FiDownload, FiBarChart2 } from "react-icons/fi";
 
 export default function Home() {
   const [url, setUrl] = useState("");
@@ -19,6 +15,7 @@ export default function Home() {
   const [copied, setCopied] = useState(false);
   const [customCode, setCustomCode] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
+  const [customizeLink, setCustomizeLink] = useState(false);
 
   const qrRef = useRef<HTMLCanvasElement | null>(null);
   const { isLoggedIn, username } = useAuth();
@@ -83,9 +80,7 @@ export default function Home() {
             </span>
           </h1>
 
-          <p className="mt-2 text-gray-600 text-lg">
-            Let's Shorten Your Links
-          </p>
+          <p className="mt-2 text-gray-600 text-lg">Let's Shorten Your Links</p>
         </div>
 
         <div className="rounded-xl bg-white p-6 shadow-lg border border-gray-200">
@@ -99,24 +94,38 @@ export default function Home() {
               className="rounded-lg border p-4 outline-none focus:border-blue-500"
             />
 
-            <label className="text-sm font-medium text-gray-700">
-              Optional Values - Expiry Time and Custom Code
+            <label
+              onClick={() => setCustomizeLink(!customizeLink)}
+              className="text-sm font-medium text-gray-700"
+            >
+              Customize Your Links
             </label>
 
-            <input
-              type="datetime-local"
-              value={expiresAt}
-              onChange={(e) => setExpiresAt(e.target.value)}
-              className="rounded-lg border p-4 outline-none focus:border-blue-500"
-            />
+            {customizeLink && (
+              <>
+                <label className="text-sm font-medium text-gray-700">
+                  Expiration
+                </label>
+                <input
+                  type="datetime-local"
+                  value={expiresAt}
+                  onChange={(e) => setExpiresAt(e.target.value)}
+                  className="rounded-lg border p-4 outline-none focus:border-blue-500"
+                />
 
-            <input
-              type="text"
-              value={customCode}
-              onChange={(e) => setCustomCode(e.target.value)}
-              placeholder="Custom Code (optional)"
-              className="rounded-lg border p-4 outline-none focus:border-blue-500"
-            />
+                <label className="text-sm font-medium text-gray-700">
+                  Custom Code
+                </label>
+
+                <input
+                  type="text"
+                  value={customCode}
+                  onChange={(e) => setCustomCode(e.target.value)}
+                  placeholder="Custom Code (optional)"
+                  className="rounded-lg border p-4 outline-none focus:border-blue-500"
+                />
+              </>
+            )}
 
             <button
               onClick={handleShorten}
@@ -127,29 +136,30 @@ export default function Home() {
             </button>
           </div>
 
-          {error && (
-            <p className="mt-4 text-center text-red-500">{error}</p>
-          )}
+          {error && <p className="mt-4 text-center text-red-500">{error}</p>}
 
           {result && (
-            <div className="mt-8 flex flex-col items-center gap-6">
-              <div className="flex flex-wrap items-center justify-center gap-3">
-                <a
-                  href={result.shortUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  {result.shortUrl}
-                </a>
+            <div className="mt-8 flex flex-col items-center text-center gap-6">
+              <div className="flex flex-col ">
+                <p className="text-2xl font-semibold">Your link is ready!</p>
+                <div className=" flex flex-wrap items-center justify-center pt-6 gap-3">
+                  <a
+                    href={result.shortUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-blue-600 hover:underline"
+                  >
+                    {result.shortUrl}
+                  </a>
 
-                <button
-                  onClick={handleCopy}
-                  className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
-                >
-                  {copied ? "Copied" : "Copy"}
-                  <FiCopy />
-                </button>
+                  <button
+                    onClick={handleCopy}
+                    className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
+                  >
+                    {copied ? "Copied" : "Copy"}
+                    <FiCopy />
+                  </button>
+                </div>
               </div>
 
               <QRCodeCanvas value={result.shortUrl} ref={qrRef} />
