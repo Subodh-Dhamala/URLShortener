@@ -91,13 +91,14 @@ export async function login(
 
 export async function register(
   email: string,
-  password: string,
+  username:string,
+  password: string
 ): Promise<{ token: string; email: string; username: string }> {
   const res = await api.post<{
     token: string;
     email: string;
     username: string;
-  }>("/auth/register", { email, password });
+  }>("/auth/register", { email,username, password });
 
   return res.data;
 }
