@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { getMyLinks, StatsResponse } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function DashboardPage() {
   const { isLoggedIn } = useAuth();
@@ -27,15 +28,35 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <p className="p-16 flex justify-center items-center text-center font-bold h-screen">
-        Loading...
-      </p>
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <p className="text-lg font-semibold">Loading...</p>
+      </div>
+    );
+  }
+
+  if (links.length === 0) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 px-4 text-center">
+        <h1 className="text-3xl font-bold">No Links Yet!</h1>
+
+        <p className="text-gray-600">
+          You haven't shortened any links yet. Start by creating your first
+          short link.
+        </p>
+
+        <Link
+          href="/"
+          className="rounded-lg bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-500"
+        >
+          Shorten Your First Link
+        </Link>
+      </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center p-16">
-      <h1 className="mb-6 text-2xl font-semibold text-gray-500">My Links</h1>
+    <div className="flex flex-col items-center gap-8 p-6">
+      <h1 className="text-3xl font-bold">My Links</h1>
 
       <div className="w-full max-w-4xl overflow-x-auto rounded-xl border border-gray-200 shadow-md">
         <table className="w-full">
@@ -69,11 +90,9 @@ export default function DashboardPage() {
                 </td>
 
                 <td className="p-3">
-                  <span>
-                    {link.expiresAt
-                      ? new Date(link.expiresAt).toLocaleString()
-                      : "None"}
-                  </span>
+                  {link.expiresAt
+                    ? new Date(link.expiresAt).toLocaleString()
+                    : "None"}
                 </td>
               </tr>
             ))}

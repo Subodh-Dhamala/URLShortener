@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const { isLoggedIn, email, logout } = useAuth();
+  const { isLoggedIn, username, logout } = useAuth();
   const router = useRouter();
 
   const handleLogout = () => {
@@ -27,7 +27,7 @@ export default function Navbar() {
             <>
               <Link href="/dashboard">My Links</Link>
 
-              <span>{email}</span>
+              <span>{username}</span>
 
               <button onClick={handleLogout}>Logout</button>
             </>
