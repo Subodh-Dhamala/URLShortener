@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={`${geist.className} flex min-h-screen flex-col`}>
         <AuthProvider>
           <Navbar />
-          <main className="flex-1 pt-20">
+          <main className="flex-1 pt-16">
             {children}
           </main>
         </AuthProvider>

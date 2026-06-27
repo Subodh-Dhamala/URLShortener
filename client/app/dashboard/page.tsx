@@ -64,6 +64,7 @@ export default function DashboardPage() {
             <tr className="bg-gray-200">
               <th className="p-3 text-left">Short URL</th>
               <th className="p-3 text-left">Original URL</th>
+              <th className="p-3 text-left">Stats</th>
               <th className="p-3 text-left">Clicks</th>
               <th className="p-3 text-left">Expiry Date</th>
             </tr>
@@ -84,6 +85,15 @@ export default function DashboardPage() {
                 </td>
 
                 <td className="p-3">
+                  <Link
+                    href={`/stats/${link.shortCode}`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    View Stats
+                  </Link>
+                </td>
+
+                <td className="p-3">
                   <span className="rounded-full bg-green-100 px-2 py-1 text-sm text-green-700">
                     {link.clicks}
                   </span>
@@ -98,6 +108,11 @@ export default function DashboardPage() {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="mt-8 text-center">
+        <a href="/" className="font-medium text-blue-600 hover:underline">
+          Back to Home
+        </a>
       </div>
     </div>
   );
