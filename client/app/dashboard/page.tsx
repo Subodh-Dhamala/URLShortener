@@ -7,14 +7,18 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function DashboardPage() {
-  const { isLoggedIn } = useAuth();
-
+  const { isLoggedIn,isAuthLoading } = useAuth();
   const [links, setLinks] = useState<StatsResponse[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [linksLoading, setLinksLoading] = useState(true);
+
 
   const router = useRouter();
 
   useEffect(() => {
+    
+    if (isAuthLoading) return;
+
+
     if (!isLoggedIn) {
       router.push("/login");
       return;
@@ -23,10 +27,10 @@ export default function DashboardPage() {
     getMyLinks()
       .then(setLinks)
       .catch(console.error)
-      .finally(() => setIsLoading(false));
-  }, [isLoggedIn, router]);
+      .finally(() => setLinksLoading(false));
+  }, [isLoggedIn, isAuthLoading,router]);
 
-  if (isLoading) {
+  if (linksLoading || isAuthLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <p className="text-lg font-semibold">Loading...</p>

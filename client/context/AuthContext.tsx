@@ -9,6 +9,7 @@ interface AuthContextType {
   logout: ()=> void;
   username:string |null;
   isLoggedIn: boolean;
+  isAuthLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,6 +18,7 @@ export function AuthProvider({children}: {children: React.ReactNode}){
   const [token,setToken] = useState<string|null>(null);
   const [email,setEmail] = useState<string|null>(null);
   const [username,setUsername] = useState<string|null>(null);
+  const [isAuthLoading,setAuthLoading] = useState(true);
 
   useEffect(()=>{
     const token = localStorage.getItem('token');
@@ -26,6 +28,8 @@ export function AuthProvider({children}: {children: React.ReactNode}){
     if(token) setToken(token);
     if(email) setEmail(email);
     if(username) setUsername(username);
+
+    setAuthLoading(false);
 
   },[]);
 
@@ -41,6 +45,7 @@ export function AuthProvider({children}: {children: React.ReactNode}){
   const logout = ()=>{
     localStorage.removeItem('token');
     localStorage.removeItem('email');
+    localStorage.removeItem('username')
     setToken(null);
     setEmail(null);
     setUsername(null);
@@ -55,6 +60,7 @@ export function AuthProvider({children}: {children: React.ReactNode}){
       logout,
       username,
       isLoggedIn: !!token,
+      isAuthLoading,
     }}
     >
       {children}
