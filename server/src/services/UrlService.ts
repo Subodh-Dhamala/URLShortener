@@ -2,6 +2,7 @@ import { AppDataSource } from "../lib/database";
 import { redis } from "../lib/redis";
 import { Url } from "../entities/Url";
 import { generateShortCode } from "../lib/shortcode";
+import { LessThan, MoreThan } from "typeorm";
 
 export class UrlService {
   private repo = AppDataSource.getRepository(Url);
@@ -23,7 +24,7 @@ export class UrlService {
 
     if (customCode) {
      if (!/^[A-Za-z0-9-]{3,20}$/.test(customCode)) {
-  throw new Error("Custom code must be 3–20 characters (letters, numbers, hyphens)");
+      throw new Error("Custom code must be 3–20 characters (letters, numbers, hyphens)");
 }
 
       const existing = await this.repo.findOne({
@@ -31,8 +32,17 @@ export class UrlService {
       });
 
       if (existing) {
-        throw new Error("This code already exists, try a new one!");
+
+        if(existing.expiresAt && new Date(existing.expiresAt) > new Date()) {
+          throw new Error("This code already exists, try a new one!");
+          }
+          else if(!existing.expiresAt){
+            throw new Error("This code already exists, try a new one!");
+          }
       }
+
+
+
 
       shortCode = customCode;
     } else {
