@@ -41,10 +41,13 @@ export default function LoginPage() {
         <div className="flex flex-col gap-4">
           <input
             type="email"
+            required
             value={email}
             placeholder="Enter your email"
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 p-3 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 p-3 focus:ring-blue-500
+            
+            "
           />
 
           <input
@@ -64,7 +67,8 @@ export default function LoginPage() {
         <button
           onClick={handleLogin}
           disabled={isLoading || !email || !password}
-          className="w-full rounded-lg bg-blue-600 p-4 text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+          className="w-full rounded-lg bg-blue-500 p-4 text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50
+          cursor-pointer"
         >
           {isLoading ? "Logging in..." : "Login"}
         </button>

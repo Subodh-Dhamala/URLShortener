@@ -75,8 +75,9 @@ export default function RegisterPage() {
 
           <button
             onClick={handleRegister}
-            disabled={isLoading || !email || !password}
-            className="rounded-lg bg-blue-600 p-4 text-white disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={isLoading || !email ||!username || !password}
+            className="rounded-lg bg-blue-600 p-4 text-white disabled:cursor-not-allowed disabled:opacity-50
+            cursor-pointer"
           >
             {isLoading ? "Creating account..." : "Sign up"}
           </button>
