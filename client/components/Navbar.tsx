@@ -25,28 +25,27 @@ export default function Navbar() {
           SanoLink
         </Link>
 
-      
         {isLoggedIn ? (
-          <div className="relative">
+          <div className="relative cursor-pointer">
             <button
               onClick={() => setOpen(!open)}
-              className="flex items-center gap-2 rounded-full px-3 py-2 transition hover:bg-gray-100"
+              className="flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 transition hover:bg-gray-100"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 font-semibold text-white">
+              <div className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-blue-600 font-semibold text-white">
                 {username?.charAt(0).toUpperCase()}
               </div>
 
-              <span className="hidden font-medium text-gray-700 sm:block">
+              <span className="hidden cursor-pointer font-medium text-gray-700 sm:block">
                 {username}
               </span>
             </button>
 
             {open && (
-              <div className="absolute right-0 mt-2 w-44 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
+              <div className="absolute right-0 mt-2 w-44 cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
                 <Link
                   href="/dashboard"
                   onClick={() => setOpen(false)}
-                  className="block px-4 py-3 transition hover:bg-gray-100"
+                  className="block px-4 py-3 transition hover:bg-gray-100 hover:text-blue-500 hover:underline hover:decoration-blue-500"
                 >
                   My Links
                 </Link>
@@ -56,7 +55,7 @@ export default function Navbar() {
                     setOpen(false);
                     handleLogout();
                   }}
-                  className="block w-full px-4 py-3 text-left transition hover:bg-gray-100"
+                  className="block w-full cursor-pointer px-4 py-3 text-left transition hover:bg-gray-100 hover:text-blue-500 hover:underline hover:decoration-blue-500"
                 >
                   Logout
                 </button>
@@ -67,7 +66,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <Link
               href="/login"
-              className="font-medium text-gray-700 hover:text-blue-600"
+              className="font-medium text-gray-700 hover:text-blue-500 hover:underline hover:decoration-blue-500"
             >
               Login
             </Link>

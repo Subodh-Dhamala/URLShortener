@@ -96,7 +96,7 @@ export default function Home() {
 
             <label
               onClick={() => setCustomizeLink(!customizeLink)}
-              className="text-sm font-medium text-gray-700"
+              className="cursor-pointer hover:underline hover:decoration-blue-500 text-sm font-medium text-gray-700"
             >
               Customize Your Links
             </label>
@@ -130,7 +130,7 @@ export default function Home() {
             <button
               onClick={handleShorten}
               disabled={isLoading}
-              className="rounded-lg bg-blue-600 p-4 font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
+              className=" cursor-pointer rounded-lg bg-blue-600 p-4 font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isLoading ? "Shortening..." : "Shorten"}
             </button>
@@ -154,7 +154,7 @@ export default function Home() {
 
                   <button
                     onClick={handleCopy}
-                    className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
+                    className=" cursor-pointer flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
                   >
                     {copied ? "Copied" : "Copy"}
                     <FiCopy />
@@ -166,7 +166,7 @@ export default function Home() {
 
               <div className="flex gap-4">
                 <Link href={`/stats/${result.shortCode}`}>
-                  <button className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-400">
+                  <button className="cursor-pointer flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-400">
                     View Stats
                     <FiBarChart2 />
                   </button>
@@ -174,7 +174,7 @@ export default function Home() {
 
                 <button
                   onClick={handleDownloadQR}
-                  className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
+                  className="cursor-pointer flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
                 >
                   Download QR
                   <FiDownload />
