@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -30,7 +30,7 @@ api.interceptors.response.use(
         localStorage.removeItem("token");
         localStorage.removeItem("email");
         localStorage.removeItem("username");
-        window.location.href = "/location";
+        window.location.href = "/login";
       }
     }
 
