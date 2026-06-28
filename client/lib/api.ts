@@ -30,7 +30,7 @@ api.interceptors.response.use(
         localStorage.removeItem("token");
         localStorage.removeItem("email");
         localStorage.removeItem("username");
-        window.location.href = "/login";
+        window.location.href = "/";
       }
     }
 
